@@ -9,11 +9,16 @@ public class BolaNormal extends Proyectil{
 	
 	
 	public BolaNormal(Vector2D posicion,BufferedImage textura, ArkaPOOB arkaPOOB,Player ultimoGolpeador, Vector2D velocidad){
-		super(posicion,textura, arkaPOOB, ultimoGolpeador,velocidad);
+		super(posicion,textura, arkaPOOB, ultimoGolpeador,velocidad,Proyectil.DAMAGE_NORMAL);
+		
 	}
 	
 	public BolaNormal(Vector2D posicion,BufferedImage textura, ArkaPOOB arkaPOOB,Player ultimoGolpeador){
-		super(posicion,textura, arkaPOOB, ultimoGolpeador);
+		super(posicion,textura, arkaPOOB, ultimoGolpeador,Proyectil.DAMAGE_NORMAL);
+	}
+	
+	public BolaNormal(Vector2D posicion,BufferedImage textura, ArkaPOOB arkaPOOB,Player ultimoGolpeador, Vector2D velocidad,int damage){
+		super(posicion,textura, arkaPOOB, ultimoGolpeador,velocidad,damage);
 	}
 
 	
@@ -57,6 +62,7 @@ public class BolaNormal extends Proyectil{
 			Vector2D centroB = b.getCentro();
 			int bWidth = b.getWidth(),bHeight = b.getHeight();
 			if(Math.abs(centroB.getX() - miCentro.getX()) <= (getWidth()+bWidth)/2  && Math.abs(centroB.getY()-miCentro.getY()) <= (getHeight()+bHeight)/2){
+				b.disminuirRes(getDamage());
 				Vector2D posB = b.getPosicion();
 				if(miCentro.getX() >= posB.getX() && miCentro.getX() <= posB.getX()+bWidth) reboteY();
 				else if(miCentro.getY() >= posB.getY() && miCentro.getY() <= posB.getY()+bHeight) reboteX();

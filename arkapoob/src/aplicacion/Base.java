@@ -11,7 +11,8 @@ public class Base extends GameObject{
 	
 	public static final int NORMAL = 1;
 	
-	private ArkaPOOB arkaPOOB; 
+	private ArkaPOOB arkaPOOB;
+	public static final int CAMBIO_X = 10;
 	
 	
 	public Base(Vector2D posicion,BufferedImage textura, ArkaPOOB arkaPOOB){
@@ -21,10 +22,12 @@ public class Base extends GameObject{
 	
 	public void update(){
 		if(Teclado.getLeft()){
-			getPosicion().cambioX(-10);
+			if(getPosicion().getX()-CAMBIO_X >= 0)
+				getPosicion().cambioX(-CAMBIO_X);
 		}
 		if(Teclado.getRight()){
-			getPosicion().cambioX(10);
+			if(getPosicion().getX()+getWidth()+CAMBIO_X <= arkaPOOB.getWidth())
+			getPosicion().cambioX(CAMBIO_X);
 		}
 	}
 	public void draw(Graphics g){

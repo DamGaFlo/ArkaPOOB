@@ -22,12 +22,14 @@ public class ArkaPOOB{
 		bolaEnJuego = new BolaNormal(new Vector2D(200,200),Recursos.bola,this,null);
 		player = new Player(3,1,new Vector2D(100,HIGHT-60-200),this);
 		bloques = new ArrayList<Bloque>();
-		bloques.add(new Bloque(new Vector2D(100,100),Recursos.bloqueRojo));
+		bloques.add(new Bloque(new Vector2D(100,100),Recursos.bloqueRojo,this));
 		
 	}
 	public void update(){
 		bolaEnJuego.update();
 		player.update();
+		ArrayList<Bloque> iterador =  new ArrayList<Bloque>(bloques);
+		for(Bloque b: iterador) b.update();
 	}
 		
 	
