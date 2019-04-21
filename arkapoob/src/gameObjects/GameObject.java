@@ -12,6 +12,7 @@ public abstract class GameObject{
 		this.textura = textura;
 		this.posicion = posicion;
 	}
+	
 	public abstract void update();
 	public abstract void draw(Graphics g);
 	

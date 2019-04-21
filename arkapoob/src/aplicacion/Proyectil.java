@@ -12,6 +12,7 @@ public abstract class Proyectil extends GameObject{
 	private ArkaPOOB arkaPOOB; 
 	private Player ultimoGolpeador;
 	private Vector2D velocidad;
+	private boolean enAire =false;
 	
 	public Proyectil(Vector2D posicion,BufferedImage textura,ArkaPOOB arkaPOOB,Player ultimoGolpeador,int damage){
 		super(posicion,textura);
@@ -47,7 +48,23 @@ public abstract class Proyectil extends GameObject{
 	public int getDamage(){
 		return damage;
 	}
+	public abstract void ajustarSobreBase();
 	//sobreescribir 
+	public Player getUltimoGolpe(){
+		return ultimoGolpeador;
+	}
+	public abstract void mov();
+	public abstract void mov(Vector2D vel);
+	public void diparado(){
+		enAire = true;
+	}
+	public void atrapado(){
+		enAire = false;
+	}
+	public boolean getEnAire(){
+		return enAire;
+	}
+	
 	
 	
 	

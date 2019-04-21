@@ -5,7 +5,10 @@ import math.Vector2D;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.util.*;
+import input.*;
 public class BolaNormal extends Proyectil{
+	
+	private boolean destruida = false;
 	
 	
 	public BolaNormal(Vector2D posicion,BufferedImage textura, ArkaPOOB arkaPOOB,Player ultimoGolpeador, Vector2D velocidad){
@@ -22,12 +25,21 @@ public class BolaNormal extends Proyectil{
 	}
 
 	
+	/**
+	*update actualiza la logica del funcionamiento de la bola
+	*/
 	public void update(){
-		colicion();
-		mov();
 		
+		if(getEnAire()){
+			colicion();
+			corrigeAngle();
+			mov();
+		}
 		
 	}
+	/**
+	*draw genera la textura sobre graphis en el buffer
+	*/
 	public void draw(Graphics g){
 		g.drawImage(getTextura(),(int)getPosicion().getX(),(int) getPosicion().getY(),null);
 	}
@@ -39,21 +51,35 @@ public class BolaNormal extends Proyectil{
 	}
 	private void bordes(){
 		if(getCentro().getX()+getWidth()/2 >= getMaxWidth()  ||  getCentro().getX()-getWidth()/2<=0) reboteX();
-		if(getCentro().getY()+getHeight()/2 >= getMaxHight()  ||  getCentro().getY()-getHeight()/2<=0) reboteY();
+		if(getCentro().getY()-getHeight()/2<=0) reboteY();
+		if(getCentro().getY()+getHeight()/2 >= getMaxHight()){
+			destroy();
+		}
 	}
 	
 	
 	private void colicion(){
 		bordes();
-		bloquesColicion();
-		// se puede hacer mas general con un arreglo de players
-		Vector2D posBase = getArkaPoob().getPlayer().getBase().getCentro(),miCentro = getCentro();
-		int baseWidth = getArkaPoob().getPlayer().getBase().getWidth(),baseHeight = getArkaPoob().getPlayer().getBase().getHeight();
-		if(Math.abs(posBase.getX()-miCentro.getX()) <= (getWidth()+baseWidth)/2 && Math.abs(posBase.getY()-miCentro.getY()) <= (getHeight()+baseHeight)/2){
-			reboteY();
+		if(!destruida){
+			bloquesColicion();
+			colicionPlayers();
 		}
 		
-		
+	}
+	private void colicionPlayers(){
+		ArrayList<Player> players = getArkaPoob().getPlayers();
+		Vector2D miCentro = getCentro();
+		for(Player p: players){
+			Vector2D posBase = p.getBase().getCentro();
+			int baseWidth = p.getBase().getWidth(),baseHeight = p.getBase().getHeight();
+			if(Math.abs(posBase.getX()-miCentro.getX()) <= (getWidth()+baseWidth)/2 && Math.abs(posBase.getY()-miCentro.getY()) <= (getHeight()+baseHeight)/2){
+				if(!p.enEspera()){
+					p.tiempoDeEspera();
+					reboteY();
+				}
+				break;
+			}
+		}
 	}
 	private void bloquesColicion(){
 		Vector2D miCentro = getCentro();
@@ -68,12 +94,29 @@ public class BolaNormal extends Proyectil{
 				else if(miCentro.getY() >= posB.getY() && miCentro.getY() <= posB.getY()+bHeight) reboteX();
 				else{
 					reboteX();reboteY();
+					setVelocidad(getVelocidad().addAngle(((Math.random()*2)-1)*Math.PI/4));
+					
 				}
 			}
 		}
 		
 	}
-	private void mov(){
+	public void mov(){
 		setPosicion(getPosicion().add(getVelocidad()));
 	}
+	public void mov(Vector2D movimiento){
+		setPosicion(getPosicion().add(movimiento));
+	}
+	public void destroy(){
+		getArkaPoob().getBolasEnJuego().remove(this);
+		destruida = true;
+	}
+	public void ajustarSobreBase(){
+		setPosicion(new Vector2D(getPosicion().getX()-getWidth()/2,getPosicion().getY()-getHeight()-5));
+	}
+	private void corrigeAngle(){
+		double angle = Math.toDegrees(getVelocidad().getAngle());
+		if((angle>85 && angle<95) || (angle>175 && angle<185) || (angle>265 && angle<275) || (angle>=0 && angle<5) || (angle>355 && angle<=360)) setVelocidad(getVelocidad().addAngle(Math.PI/4));
+	}
+	
 }

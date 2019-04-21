@@ -5,15 +5,18 @@ import java.awt.event.*;
 public class Teclado implements KeyListener{
 	
 	private boolean[] keys = new boolean[256];
-	private static boolean left,right;
+	private static boolean left,right,space,p;
 	
 	public Teclado(){
 		left = false;
 		right = false;
+		space = false;
 	}
 	public void update(){
 		left = keys[KeyEvent.VK_LEFT];
 		right = keys[KeyEvent.VK_RIGHT];
+		space = keys[KeyEvent.VK_SPACE];
+		p = keys[KeyEvent.VK_P];
 	}
 	public void keyPressed(KeyEvent e){
 		keys[e.getKeyCode()] = true;
@@ -28,6 +31,12 @@ public class Teclado implements KeyListener{
 	}
 	public static boolean getRight(){
 		return right;
+	}
+	public static boolean getSpace(){
+		return space;
+	}
+	public boolean getP(){
+		return p;
 	}
 
 } 

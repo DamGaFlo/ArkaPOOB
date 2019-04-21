@@ -41,7 +41,7 @@ public class Vector2D{
 	public Vector2D escalar(double v){
 		return new Vector2D(compX*v,compY*v);
 	}
-	public Vector2D getVector(double angle,double magnitud){
+	public static Vector2D getVector(double angle,double magnitud){
 		return new Vector2D(Math.cos(angle)*magnitud,Math.sin(angle)*magnitud);
 	}
 	public double getAngle(){
