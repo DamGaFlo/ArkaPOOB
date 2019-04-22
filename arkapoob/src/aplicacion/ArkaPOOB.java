@@ -5,7 +5,7 @@ import math.Vector2D;
 import java.awt.image.BufferedImage;
 import graficos.Recursos;
 import java.util.*;
-import input.*;
+import input.*; 
 
 public class ArkaPOOB{
 	private final int MIN_ANGLE_INIT = 225,MAX_ANGLE_INIT = 315;
