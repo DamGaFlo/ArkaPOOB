@@ -29,11 +29,19 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 	private double delta = 0;
 	private int AVERAGEFPS;
 	
+        /**
+         * Constructor de la interfaz
+         */
 	public ArkaPoobGUI(){
 		super("Arkanoid");
+		start();
 		preparaElementos();
 		preparaAcciones();
 	}
+        
+        /**
+         * Prepara los elementos del juego
+         */
 	private void preparaElementos(){
 		setSize(WIDTH,HIGTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,6 +50,10 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 		setVisible(true);
 		preparaCanvas();
 	}
+        
+        /**
+         * Prepara el canvas para su dibujo
+         */
 	private void preparaCanvas(){
 		canvas = new Canvas();
 		teclado = new Teclado();
@@ -54,13 +66,25 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 		
 		
 	}
+        
+        /**
+         * prepara las acciones de respuesta en el juego
+         */
 	private void preparaAcciones(){
 		
 	}
+        
+        /**
+         * inicia el juego 
+         */
 	private void init(){
 		Recursos.init();
 		game = new ArkaPOOB(800,800);
 	}
+        
+        /**
+         * dibuja los componentes en pantalla
+         */
 	private void draw(){
 		bufferS = canvas.getBufferStrategy();
 		if(bufferS == null){ canvas.createBufferStrategy(3);return;}
@@ -74,13 +98,24 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 		graficos.dispose();
 		bufferS.show();
 	}
+        
+        /**
+         * actualiza los valores del juego
+         */
 	public void update(){
 		teclado.update();
 		game.update();
 	}
+        /**
+         * 
+         */
 	public void vidas(){
 		// por definir
 	}
+        
+        /**
+         * Muestra el puntaje que recibe el jugador
+         */
 	public void score(){
 		Vector2D pos = new Vector2D(810,140);
 		graficos.setColor(Color.DARK_GRAY);
@@ -92,7 +127,10 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 		graficos.drawImage(Recursos.numeros[10],(int)pos.getX(),(int)pos.getY(),null);
 		
 	}
-	
+	/**
+         * corre el juego
+         */
+        @Override
 	public void run(){
 		long now = 0;
 		long lastTime = System.nanoTime();
@@ -118,12 +156,20 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 		}
 		stop();
 	}
+        
+        /**
+         * empieza el juego
+         */
 	private void start(){
 		thread = new Thread(this);
 		running=true;
 		thread.start();
 		
 	}
+        
+        /**
+         * detiene el juego
+         */
 	private void stop(){
 		try{
 			thread.join();
@@ -131,9 +177,5 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 		}catch(InterruptedException e){
 			e.printStackTrace();
 		}
-	}
-	public static void main(String[] args){
-		ArkaPoobGUI ventana = new ArkaPoobGUI(); 
-		ventana.start();
 	}
 }
