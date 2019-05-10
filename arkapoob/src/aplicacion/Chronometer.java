@@ -1,4 +1,4 @@
-package gameObjects;
+package aplicacion;
 
 public class Chronometer {
 	private long delta, lastTime;

@@ -1,10 +1,6 @@
 package aplicacion;
 
-import gameObjects.GameObject;
 import math.Vector2D;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics;
-import graficos.*;
 
 public class SlowBall extends Sorpresa{
     /**
@@ -13,9 +9,18 @@ public class SlowBall extends Sorpresa{
      * @param textura - imagen que posee la sorpresa
      * @param bloque  - bloque que contiene la sorpresa
      */
-	public SlowBall(Vector2D posicion,BufferedImage textura,Bloque bloque){
-		super(posicion,textura,bloque);
+	public SlowBall(Vector2D posicion,int width,int height,int estado,Bloque bloque){
+		super(posicion,width,height,estado,bloque);
 
+	}
+	
+		/**
+		 * 
+		 * @param posicion
+		 * @param bloque
+		 */
+	public SlowBall(Vector2D posicion,Bloque bloque) {
+		this(posicion,WIDTH_DEFAULT,HEIGHT_DEFAULT,0,bloque);
 	}
         /**
          * Efecto que tiene la sospresa sobre la base o juego
@@ -27,6 +32,12 @@ public class SlowBall extends Sorpresa{
 			b.setVelocidad(b.getVelocidad().escalar(0.5));
 		}
 	}
-	
+    public  Representacion representacion() {
+    	return new Representacion(getNombre(),(int)getPosicion().getX(),(int)getPosicion().getY(),getEstado());
+    }
+    	
+    public String getNombre() {
+    	return this.getClass().getSimpleName();
+    }
 	
 }

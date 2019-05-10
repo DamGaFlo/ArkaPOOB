@@ -1,9 +1,9 @@
 package aplicacion;
 
-import java.util.*;
+
 import math.Vector2D;
-import java.awt.Graphics;
-import gameObjects.*;
+
+
 public class Player{
 	private int puntos;
 	private int vidas;
@@ -17,11 +17,12 @@ public class Player{
          * @param posicion - posicion sobre la cual se ubica el jugador
          * @param arkaPOOB - Juego sobre el cual actua el jugador
          */
-	public Player(int vidas,int plataforma,Vector2D posicion,ArkaPOOB arkaPOOB){
+	public Player(int vidas,int plataforma,Vector2D posicion,ArkaPOOB arkaPOOB,String izq,String der,String fire){
+		this.setPuntos(0);
 		this.vidas = vidas;
 		this.arkaPOOB = arkaPOOB;
 		time = new Chronometer();
-		base = Base.getBase(plataforma,posicion,this);
+		base = Base.getBase(plataforma,posicion,this,izq,der,fire);
 	}
 	/**
 	*update actualiza la logica del funcionamiento de la bola
@@ -30,12 +31,8 @@ public class Player{
 		base.update();
 		time.update();
 	}
-	/**
-	*draw genera la textura sobre graphis en el buffer en este caso de la base del jugador
-        * @param g - graficos sobre los que se dibuja
-	*/
-	public void draw(Graphics g){
-		base.draw(g);
+	public  Representacion representacion() {
+		return base.representacion();
 	}
         /**
          * 
@@ -49,7 +46,7 @@ public class Player{
          * @param puntosObtenidos - cantidad de puntos que ha ganado
          */
 	public void addScore(int puntosObtenidos){
-		puntos+=puntosObtenidos;
+		setPuntos(getPuntos() + puntosObtenidos);
 	}
         /**
          * Tiempo para correr
@@ -76,9 +73,9 @@ public class Player{
          * 
          * @return Cantidad de vidas que posee el jugador
          */
-        public int getVida(){
-            return vidas;
-        }
+    public int getVida(){
+         return vidas;
+    }
         /**
          * 
          * @return Juego sobre el cual actua el jugador
@@ -86,4 +83,17 @@ public class Player{
 	public ArkaPOOB getArkaPOOB(){
 		return arkaPOOB;
 	}
+    public String getNombre() {
+    	return this.getClass().getSimpleName();
+    }
+    public void sumaPuntos(int delta) {
+    	setPuntos(getPuntos() + delta);
+    }
+	public int getPuntos() {
+		return puntos;
+	}
+	public void setPuntos(int puntos) {
+		this.puntos = puntos;
+	}
+    
 }

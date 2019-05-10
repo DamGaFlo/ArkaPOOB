@@ -1,9 +1,6 @@
 package aplicacion;
 
-import gameObjects.GameObject;
 import math.Vector2D;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics;
 
 public abstract class Proyectil extends GameObject{
 	
@@ -22,12 +19,13 @@ public abstract class Proyectil extends GameObject{
          * @param ultimoGolpeador - ultimo jugador que dio un golpe en la bola
          * @param damage - daño que genera la bola
          */
-	public Proyectil(Vector2D posicion,BufferedImage textura,ArkaPOOB arkaPOOB,Player ultimoGolpeador,int damage){
-		super(posicion,textura);
+	public Proyectil(Vector2D posicion,int width,int height,int estado,ArkaPOOB arkaPOOB,Player ultimoGolpeador,int damage){
+		super(posicion,width,height,estado);
 		this.ultimoGolpeador = ultimoGolpeador;
 		this.arkaPOOB = arkaPOOB;
 		velocidad = new Vector2D(4,-4);
 		this.damage = damage;
+		if(ultimoGolpeador == null) enAire = true;
 	}
         /**
          * 
@@ -38,12 +36,13 @@ public abstract class Proyectil extends GameObject{
          * @param damage - daño que genera la bola
          * @param velocidad - velocidad de desplazamiento de la bola 
          */
-	public Proyectil(Vector2D posicion,BufferedImage textura,ArkaPOOB arkaPOOB,Player ultimoGolpeador,Vector2D velocidad,int damage){
-		super(posicion,textura);
+	public Proyectil(Vector2D posicion,int width,int height,int estado,ArkaPOOB arkaPOOB,Player ultimoGolpeador,Vector2D velocidad,int damage){
+		super(posicion,width,height,estado);
 		this.ultimoGolpeador = ultimoGolpeador;
 		this.arkaPOOB = arkaPOOB;
 		this.velocidad = velocidad;
 		this.damage = damage;
+		if(ultimoGolpeador == null) enAire = true;
 	}
 	/**
          * 
@@ -85,7 +84,7 @@ public abstract class Proyectil extends GameObject{
 	}
         /**
          * 
-         * @return Daño que genera la bola
+         * @return damage que genera la bola
          */
 	public int getDamage(){
 		return damage;

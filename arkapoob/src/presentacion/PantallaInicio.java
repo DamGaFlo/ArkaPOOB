@@ -5,9 +5,12 @@
  */
 package presentacion;
 
-import java.awt.*;
 import javax.swing.*;
+
+import graficos.Recursos;
+
 import java.awt.event.*;
+import input.*;
 /**
  *
  * @author IJuanKhoxD
@@ -101,7 +104,7 @@ public class PantallaInicio extends JFrame{
         player2.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                player1();
+                player2();
             }            
         });
         exit.addActionListener(new ActionListener(){
@@ -130,6 +133,11 @@ public class PantallaInicio extends JFrame{
     private void player1() {
         this.setVisible(false);
         ArkaPoobGUI juego = new ArkaPoobGUI();
+        juego.setVisible(true);
+    }
+    private void player2() {
+        this.setVisible(false);
+        ArkaPoobGUI juego = new ArkaPoob2pGUI();
         juego.setVisible(true);
     }
 }

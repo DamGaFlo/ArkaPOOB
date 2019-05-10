@@ -3,6 +3,7 @@ package presentacion;
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import aplicacion.*;
 import graficos.*;
@@ -16,9 +17,7 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 	private Canvas canvas; 
 	private Thread thread;
 	private boolean running = false;
-	private ArkaPOOB game;
-	private Teclado teclado;
-	private  int estado =1;
+	protected ArkaPOOB game;
 	
 	
 	private BufferStrategy bufferS;
@@ -45,7 +44,7 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 	private void preparaElementos(){
 		setSize(WIDTH,HIGTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
+		//setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		preparaCanvas();
@@ -56,13 +55,11 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
          */
 	private void preparaCanvas(){
 		canvas = new Canvas();
-		teclado = new Teclado();
 		canvas.setPreferredSize(new Dimension(WIDTH,HIGTH));
 		canvas.setMaximumSize(new Dimension(WIDTH,HIGTH));
 		canvas.setMinimumSize(new Dimension(WIDTH,HIGTH));
-		//canvas.setFocusable(true);
+		canvas.setFocusable(true);
 		add(canvas);
-		canvas.addKeyListener(teclado);
 		
 		
 	}
@@ -71,15 +68,51 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
          * prepara las acciones de respuesta en el juego
          */
 	private void preparaAcciones(){
+		preparaTeclado();
+	}
+	
+	private void preparaTeclado() {
 		
+		canvas.addKeyListener(new KeyListener() {
+		     	@Override
+		 	public void keyPressed(KeyEvent e){
+		 		if(e.getKeyCode() == KeyEvent.VK_A) game.izqPlayer1(true);
+		 		if(e.getKeyCode() == KeyEvent.VK_D) game.derPlayer1(true);
+		 		if(e.getKeyCode() == KeyEvent.VK_W) game.firePlayer1(true);
+		 		
+		 		if(e.getKeyCode() == KeyEvent.VK_LEFT) game.izqPlayer2(true);
+		 		if(e.getKeyCode() == KeyEvent.VK_RIGHT) game.derPlayer2(true);
+		 		if(e.getKeyCode() == KeyEvent.VK_UP) game.firePlayer2(true);
+		 		
+		 			
+		 	}
+		         @Override
+		 	public void keyReleased(KeyEvent e){
+		        	 if(e.getKeyChar() == 'p') game.pause();
+		        	 
+		        	 if(e.getKeyCode() == KeyEvent.VK_A) game.izqPlayer1(false);
+				 	 if(e.getKeyCode() == KeyEvent.VK_D) game.derPlayer1(false);
+				 	 if(e.getKeyCode() == KeyEvent.VK_W) game.firePlayer1(false);
+				 	 
+				 	if(e.getKeyCode() == KeyEvent.VK_LEFT) game.izqPlayer2(false);
+			 		if(e.getKeyCode() == KeyEvent.VK_RIGHT) game.derPlayer2(false);
+			 		if(e.getKeyCode() == KeyEvent.VK_UP) game.firePlayer2(false);
+		 	}
+		         @Override
+		 	public void keyTyped(KeyEvent e){}
+		});
 	}
         
         /**
          * inicia el juego 
          */
+	public void generaMundo() {
+		game = new ArkaPOOB();
+		game.inicio();
+	}
 	private void init(){
 		Recursos.init();
-		game = new ArkaPOOB(800,800);
+		generaMundo();
 	}
         
         /**
@@ -92,18 +125,23 @@ public class ArkaPoobGUI extends JFrame implements Runnable{
 		//-----------------------
 		graficos.setColor(Color.BLACK);
 		graficos.fillRect(0,0,WIDTH,HIGTH);
-		score();
-		game.draw(graficos);
+		
+		gameRepresenta(graficos);
 		//-----------------------
 		graficos.dispose();
 		bufferS.show();
+	}
+	private void gameRepresenta(Graphics g) {
+		score();
+		for(Representacion r: game.enEscenario()) {
+			g.drawImage(Recursos.getImagen(r.getNameClass(), r.getEstado()),r.getX(),r.getY(),null);
+		}
 	}
         
         /**
          * actualiza los valores del juego
          */
 	public void update(){
-		teclado.update();
 		game.update();
 	}
         /**

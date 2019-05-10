@@ -1,37 +1,45 @@
 package aplicacion;
 
-import gameObjects.GameObject;
 import math.Vector2D;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics;
 import java.util.*;
-import input.*;
 public class BolaNormal extends Proyectil{
 	
 	private boolean destruida = false;
 	
-	/**
-         * 
-         * @param posicion - Vector de informacion sobre la posicion
-         * @param textura - Imagen que contiene la pelota
-         * @param arkaPOOB - Juego sobre el cual se posiciona
-         * @param ultimoGolpeador - Reconoce el jugador que golpeo por ultima vez
-         * @param velocidad - Velocidad con la cual viaja la pelota
-         */
-	public BolaNormal(Vector2D posicion,BufferedImage textura, ArkaPOOB arkaPOOB,Player ultimoGolpeador, Vector2D velocidad){
-		super(posicion,textura, arkaPOOB, ultimoGolpeador,velocidad,Proyectil.DAMAGE_NORMAL);
+		/**
+		 * 
+		 * @param posicion
+		 * @param width
+		 * @param height
+		 * @param estado
+		 * @param arkaPOOB
+		 * @param ultimoGolpeador
+		 * @param velocidad
+		 */
+	public BolaNormal(Vector2D posicion,int width,int height,int estado, ArkaPOOB arkaPOOB,Player ultimoGolpeador, Vector2D velocidad){
+		super(posicion,width,height,estado, arkaPOOB, ultimoGolpeador,velocidad,Proyectil.DAMAGE_NORMAL);
+		
+	}
+		/**
+		 * 
+		 * @param posicion
+		 * @param arkaPOOB
+		 * @param ultimoGolpeador
+		 * @param velocidad
+		 */
+	public BolaNormal(Vector2D posicion, ArkaPOOB arkaPOOB,Player ultimoGolpeador, Vector2D velocidad){
+		this(posicion,22,22,0, arkaPOOB, ultimoGolpeador,velocidad);
 		
 	}
 	
-        /**
-         * 
-         * @param posicion - Vector de informacion sobre la posicion
-         * @param textura - Imagen que contiene la pelota
-         * @param arkaPOOB - Juego sobre el cual se posiciona
-         * @param ultimoGolpeador - Reconoce el jugador que golpeo por ultima vez
-         */
-	public BolaNormal(Vector2D posicion,BufferedImage textura, ArkaPOOB arkaPOOB,Player ultimoGolpeador){
-		super(posicion,textura, arkaPOOB, ultimoGolpeador,Proyectil.DAMAGE_NORMAL);
+		/**
+		 * 
+		 * @param posicion
+		 * @param arkaPOOB
+		 * @param ultimoGolpeador
+		 */
+	public BolaNormal(Vector2D posicion, ArkaPOOB arkaPOOB,Player ultimoGolpeador){
+		super(posicion,22,22,0, arkaPOOB, ultimoGolpeador,Proyectil.DAMAGE_NORMAL);
 	}
 	
         /**
@@ -43,8 +51,8 @@ public class BolaNormal extends Proyectil{
          * @param velocidad - Velocidad con la cual viaja la pelota
          * @param damage - daño que genera la bola al golpear
          */
-	public BolaNormal(Vector2D posicion,BufferedImage textura, ArkaPOOB arkaPOOB,Player ultimoGolpeador, Vector2D velocidad,int damage){
-		super(posicion,textura, arkaPOOB, ultimoGolpeador,velocidad,damage);
+	public BolaNormal(Vector2D posicion,int width,int height,int estado, ArkaPOOB arkaPOOB,Player ultimoGolpeador, Vector2D velocidad,int damage){
+		super(posicion,width,height,estado, arkaPOOB, ultimoGolpeador,velocidad,damage);
 	}
 
 	
@@ -65,10 +73,7 @@ public class BolaNormal extends Proyectil{
 	*draw genera la textura sobre graphis en el buffer
         * @param g
 	*/
-        @Override
-	public void draw(Graphics g){
-		g.drawImage(getTextura(),(int)getPosicion().getX(),(int) getPosicion().getY(),null);
-	}
+
         
         /**
          * Define direccion del rebote en X
@@ -133,7 +138,7 @@ public class BolaNormal extends Proyectil{
 			Vector2D centroB = b.getCentro();
 			int bWidth = b.getWidth(),bHeight = b.getHeight();
 			if(Math.abs(centroB.getX() - miCentro.getX()) <= (getWidth()+bWidth)/2  && Math.abs(centroB.getY()-miCentro.getY()) <= (getHeight()+bHeight)/2){
-				b.disminuirRes(getDamage());
+				b.colicion(this);
 				Vector2D posB = b.getPosicion();
 				if(miCentro.getX() >= posB.getX() && miCentro.getX() <= posB.getX()+bWidth) reboteY();
 				else if(miCentro.getY() >= posB.getY() && miCentro.getY() <= posB.getY()+bHeight) reboteX();
@@ -180,5 +185,13 @@ public class BolaNormal extends Proyectil{
 		double angle = Math.toDegrees(getVelocidad().getAngle());
 		if((angle>85 && angle<95) || (angle>175 && angle<185) || (angle>265 && angle<275) || (angle>=0 && angle<5) || (angle>355 && angle<=360)) setVelocidad(getVelocidad().addAngle(Math.PI/4));
 	}
+	public  Representacion representacion() {
+		return new Representacion(getNombre(),(int)getPosicion().getX(),(int)getPosicion().getY(),getEstado());
+	}
+	
+	public String getNombre() {
+	    return this.getClass().getSimpleName();
+	}
+	
 	
 }
