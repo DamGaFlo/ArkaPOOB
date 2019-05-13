@@ -91,11 +91,20 @@ public class BolaNormal extends Proyectil{
          * Reconoce los bordes por los cuales viaja la bola para tomar una decision segun su lugar
          */
 	private void bordes(){
-		if(getCentro().getX()+getWidth()/2 >= getMaxWidth()  ||  getCentro().getX()-getWidth()/2<=0) reboteX();
-		if(getCentro().getY()-getHeight()/2<=0) reboteY();
+		if((getCentro().getX()+getWidth()/2 >= getMaxWidth()  ||  getCentro().getX()-getWidth()/2<=0)
+			&& !(getPosAnterior(1).getX()+getWidth()/2 >= getMaxWidth() || getPosAnterior(1).getX()-getWidth()/2<=0)) reboteX();
+		if((getCentro().getY()-getHeight()/2<=0)
+			&& !(getPosAnterior(1).getY()-getHeight()/2<=0)) reboteY();
+		
 		if(getCentro().getY()+getHeight()/2 >= getMaxHight()){
 			destroy();
 		}
+	}
+	
+	public Vector2D getPosAnterior(int times) {
+		return getCentro().add(getVelocidad().escalar(-times));
+		
+		
 	}
 	
 	/**
@@ -118,11 +127,10 @@ public class BolaNormal extends Proyectil{
 		for(Player p: players){
 			Vector2D posBase = p.getBase().getCentro();
 			int baseWidth = p.getBase().getWidth(),baseHeight = p.getBase().getHeight();
-			if(Math.abs(posBase.getX()-miCentro.getX()) <= (getWidth()+baseWidth)/2 && Math.abs(posBase.getY()-miCentro.getY()) <= (getHeight()+baseHeight)/2){
-				if(!p.enEspera()){
-					p.tiempoDeEspera();
-					reboteY();
-				}
+			if(colicion(p.getBase(),0) && !colicion(p.getBase(),1)){
+				p.getBase().colicion(this);
+				if(miCentro.getY() >= posBase.getY() && miCentro.getY() <= posBase.getY()+baseHeight) reboteX();
+				else reboteY();
 				break;
 			}
 		}
@@ -135,21 +143,33 @@ public class BolaNormal extends Proyectil{
 		Vector2D miCentro = getCentro();
 		ArrayList<Bloque> bloques = getArkaPoob().getBloques();
 		for(Bloque b: bloques){
-			Vector2D centroB = b.getCentro();
 			int bWidth = b.getWidth(),bHeight = b.getHeight();
-			if(Math.abs(centroB.getX() - miCentro.getX()) <= (getWidth()+bWidth)/2  && Math.abs(centroB.getY()-miCentro.getY()) <= (getHeight()+bHeight)/2){
+			if(colicion(b,0) && !colicion(b,1)){
 				b.colicion(this);
 				Vector2D posB = b.getPosicion();
 				if(miCentro.getX() >= posB.getX() && miCentro.getX() <= posB.getX()+bWidth) reboteY();
 				else if(miCentro.getY() >= posB.getY() && miCentro.getY() <= posB.getY()+bHeight) reboteX();
 				else{
 					reboteX();reboteY();
-					setVelocidad(getVelocidad().addAngle(((Math.random()*2)-1)*Math.PI/4));
 					
 				}
+				break;
 			}
 		}
 		
+	}
+	
+	/**
+	 * revisa si coliciono en una pocision presentr o anterior
+	 * @param objeto
+	 * @return
+	 */
+	public boolean colicion(GameObject objeto,int time) {
+		Vector2D miCentro = getPosAnterior(time);
+		Vector2D centro = objeto.getCentro();
+		int objetoWidth = objeto.getWidth(),objetoHeight = objeto.getHeight();
+		if(Math.abs(centro.getX() - miCentro.getX()) <= (getWidth()+objetoWidth)/2  && Math.abs(centro.getY()-miCentro.getY()) <= (getHeight()+objetoHeight)/2) return true;
+		return false;
 	}
         
         /**

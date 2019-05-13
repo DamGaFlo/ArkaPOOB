@@ -39,5 +39,8 @@ public abstract class GameObject{
 	public int getEstado() {
 		return estado;
 	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
 
 }

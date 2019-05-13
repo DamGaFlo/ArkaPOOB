@@ -44,6 +44,7 @@ public class ArkaPOOB{
 			updateOrdenesPlayer1();
 			if(bolasEnJuego.isEmpty()){
 				reInicio();
+				sorpresas.clear();
 				for(Player p:players) p.cambioVida(-1);
 			}
 			ArrayList<Proyectil> bolas = new ArrayList<Proyectil>(bolasEnJuego);
@@ -51,10 +52,9 @@ public class ArkaPOOB{
 			for(Player p:players) p.update();
 			ArrayList<Bloque> iterador =  new ArrayList<Bloque>(bloques);
 			for(Bloque b: iterador) b.update();
-			if(!sorpresas.isEmpty()){
-				ArrayList<Sorpresa> iteraSorpresas = new ArrayList<Sorpresa>(sorpresas);
-				for(Sorpresa s:iteraSorpresas) s.update();
-			}
+			ArrayList<Sorpresa> iteraSorpresas = new ArrayList<Sorpresa>(sorpresas);
+			for(Sorpresa s:iteraSorpresas) s.update();
+			
 		}
 	}
 		
@@ -153,7 +153,7 @@ public class ArkaPOOB{
 		 * genera los jugadores de la partida
 		 */
 	protected void preparaPlayer() {
-		players.add(new Player(3,1,new Vector2D(WIDTH/2,HEIGHT-150),this,"izq1","der1","fire1"));
+		players.add(new Player(3,Base.NORMAL,new Vector2D(WIDTH/2,HEIGHT-150),this,"izq1","der1","fire1"));
 	}
 		
 	protected void preparaAcciones() {
@@ -178,6 +178,7 @@ public class ArkaPOOB{
 	protected void reInicio(){
 		if(!players.isEmpty()){
 			players.get(0).getBase().setPosicion(new Vector2D(WIDTH/2-players.get(0).getBase().getWidth()/2,HEIGHT-players.get(0).getBase().getHeight()-50));
+			players.get(0).getBase().restaura();
 		}
 		generaBolas();
 		sorpresas.clear();

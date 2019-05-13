@@ -1,17 +1,16 @@
 package aplicacion;
 
 import math.Vector2D;
-import input.*;
 
 public class Base extends GameObject{
 	
-	public static final int NORMAL = 1;
+	public static final int NORMAL = 0,ESPECIAL =1,PEGAJOSA = 2,BIG = 3,SMALL = 4;
 	private Player player;
 	private Proyectil residente;
 	private int moxEnX = 10;
-	private String izq;
-	private String der;
-	private String fire;
+	private EstadoBase estadoBase ;
+	private int numEstado;
+	private int coliciones;
 	
 		/**
      	* 
@@ -20,13 +19,14 @@ public class Base extends GameObject{
      	* @param player - Jugador usuario de la base
      	* @param residente - Si existe bola sobre ella actualmente
      	*/
-	public Base(Vector2D posicion,int width,int height,int estado, Player player,BolaNormal residente,String izq,String der,String fire){
+	public Base(Vector2D posicion,int width,int height,int estado, Player player,BolaNormal residente,int tipoBase){
 		super(posicion,width,height,estado);
+		this.estadoBase = new BaseNormal(this);
 		this.player = player;
 		this.residente = residente;
-		this.izq = izq;
-		this.der = der;
-		this.fire = fire;
+		coliciones = 0;
+		this.numEstado = tipoBase;
+		asignaEstado(tipoBase);
 	}
 	
 		/**
@@ -35,8 +35,8 @@ public class Base extends GameObject{
 		 * @param player - Jugador usuario de la base
 		 * @param residente - Si existe bola sobre ella actualmente
 		 */
-	public Base(Vector2D posicion, Player player,BolaNormal residente,String izq,String der,String fire){
-		this(posicion,200,20,0,player,residente,izq,der,fire);
+	public Base(Vector2D posicion, Player player,BolaNormal residente){
+		this (posicion,140,20,0,player,residente,NORMAL);
 	}
         
         /**
@@ -45,8 +45,12 @@ public class Base extends GameObject{
          * @param textura - Imagen sobre el tipo de base con la que se juega
          * @param player - Jugador usuario de la base
          */
-	public Base(Vector2D posicion, Player player,String izq,String der,String fire){
-		this(posicion,player,null,izq,der,fire);
+	public Base(Vector2D posicion, Player player,int tipoBase){
+		this(posicion,140,20,0,player,null,tipoBase);
+	}
+	
+	public Base(Vector2D posicion, Player player){
+		this(posicion,player,null);
 	}
 	
 	
@@ -55,46 +59,17 @@ public class Base extends GameObject{
          */
         @Override
 	public void update(){
-		if(player.getArkaPOOB().orden(izq)){
-			if(getPosicion().getX()-moxEnX >= 0){
-				getPosicion().cambioX(-moxEnX);
-				if(residente!=null) residente.mov(new Vector2D(-moxEnX,0));
-			}
-				
-		}
-		if(player.getArkaPOOB().orden(der)){
-			if(getPosicion().getX()+getWidth()+moxEnX <= getArkaPOOB().getWidth()){
-				getPosicion().cambioX(moxEnX);
-				if(residente!=null) residente.mov(new Vector2D(moxEnX,0));
-			}
-		
-		}
-		if(player.getArkaPOOB().orden(fire)){
-			if(residente!=null) {
-				residente.diparado();
-				residente = null;
-			}
-		}
+        estadoBase.update(this);
+
 	}
-        
 
         
         /**
-         * 
-         * @param numBase - el numero de la base que juega
-         * @param posicion - informacion de la posicion
-         * @param player - Jugador usuario de esta
-         * @return Base clon segun los datos dirigidos
-         */
-	public static Base getBase(int numBase,Vector2D posicion,Player player,String izq,String der,String fire){
-		if(numBase == 1) return new Base(posicion,player,izq,der,fire);
-		return null;
-		
-	}
-        /**
          * Define la habilidad de la base
          */
-	public void colicion(BolaNormal b) {}
+	public void colicion(BolaNormal b) {
+		estadoBase.colicion(b, this);
+	}
         
         /**
          * 
@@ -103,13 +78,10 @@ public class Base extends GameObject{
 	public void setResidente(Proyectil residente){
 		this.residente = residente;
 	}
-        
-        /**
-         * Para la base que cambia de movimiento
-         */
-	public void movOpuesto(){
-		moxEnX*=-1;
+	public Proyectil getResidente() {
+		return residente;
 	}
+        
         /**
          * 
          * @return  Juego sobre el cual esta actuando la base
@@ -119,11 +91,83 @@ public class Base extends GameObject{
 	}
 	
 	public  Representacion representacion() {
-		return new Representacion(getNombre(),(int)getPosicion().getX(),(int)getPosicion().getY(),getEstado());
+		return estadoBase.representacion(this);
+	}
+	public int getWidth() {
+		return estadoBase.getWidth(super.getWidth());
+	}
+	public int getHeight() {
+		return estadoBase.getHeight(super.getHeight());
 	}
 	
 	public String getNombre() {
-	    return this.getClass().getSimpleName();
+	    return estadoBase.getNombre();
+	}
+
+	public int getMoxEnX(){
+		return moxEnX;
+	}
+
+	public void asignaEstado(int estado) {
+		switch (estado) {
+		case NORMAL:
+			estadoBase = new BaseNormal(this);
+			break;
+		case ESPECIAL:
+			estadoBase = new BaseEspecial(this);
+			break;
+		case PEGAJOSA:
+			estadoBase = new BasePegajosa(this);
+			break;
+		case SMALL:
+			estadoBase = new BaseSmall(this);
+			break;
+		case BIG:
+			estadoBase = new BaseBig(this);
+			break;
+		}
+		
+	}
+	public void movIzq() {
+		estadoBase.movIzq(this);
+	}
+	public void movDer() {
+		estadoBase.movDer(this);
+	}
+	public void fire() {
+		estadoBase.fire(this);
 	}
 	
+	public void pegajosa() {
+		coliciones = 0;
+		estadoBase.pegajosa(this);
+	}
+	public void normal() {
+		coliciones = 0;
+		estadoBase.normal(this);
+	}
+	public void especial() {
+		coliciones = 0;
+		estadoBase.especial(this);
+	}
+	public void small() {
+		coliciones = 0;
+		estadoBase.small(this);
+	}
+	public void big() {
+		coliciones = 0;
+		estadoBase.big(this);
+	}
+	public void setEstado(EstadoBase estado) {
+		estadoBase = estado;
+	}
+	public int getColiciones() {
+		return coliciones;
+	}
+	public void setColiciones(int numColiciones) {
+		coliciones = numColiciones;
+	}
+	public void restaura() {
+		asignaEstado(numEstado);
+	}
 }

@@ -8,8 +8,8 @@ public class ArkaPOOB2P extends ArkaPOOB {
 	
 	
 	protected void preparaPlayer() {
-		players.add(new Player(3,1,new Vector2D(10,HEIGHT-150),this,"izq1","der1","fire1"));
-		players.add(new Player(3,1,new Vector2D(WIDTH-10,HEIGHT-150),this,"izq2","der2","fire2"));
+		players.add(new Player(3,Base.BIG,new Vector2D(10,HEIGHT-150),this,"izq1","der1","fire1"));
+		players.add(new Player(3,Base.SMALL,new Vector2D(WIDTH-10,HEIGHT-150),this,"izq2","der2","fire2"));
 	}
 	
 	protected void reInicio() {
@@ -19,6 +19,7 @@ public class ArkaPOOB2P extends ArkaPOOB {
 		else if(players.size()==2) {
 			players.get(0).getBase().setPosicion(new Vector2D(10,HEIGHT-players.get(0).getBase().getHeight()-50));
 			players.get(1).getBase().setPosicion(new Vector2D(WIDTH - players.get(1).getBase().getWidth()-10,HEIGHT-players.get(1).getBase().getHeight()-50));
+			for(Player p:players) p.getBase().restaura(); 
 			generaBolas();
 			sorpresas.clear();
 		}

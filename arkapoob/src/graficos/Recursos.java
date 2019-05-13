@@ -24,8 +24,24 @@ public class Recursos{
 	}
 	private static void cargaPlataformas() {
 		ArrayList<BufferedImage> img = new ArrayList<>();
+		img.add(Loader.ImageLoader("recursos/plataformas/plataforma5.png"));
+		graficos.put("BaseNormal",img);
+		
+		img = new ArrayList<>();
+		img.add(Loader.ImageLoader("recursos/plataformas/plataforma3.png"));
+		graficos.put("BaseEspecial",img);
+		
+		img = new ArrayList<>();
+		img.add(Loader.ImageLoader("recursos/plataformas/plataforma4.png"));
+		graficos.put("BasePegajosa",img);
+		
+		img = new ArrayList<>();
+		img.add(Loader.ImageLoader("recursos/plataformas/plataforma6.png"));
+		graficos.put("BaseSmall",img);
+		
+		img = new ArrayList<>();
 		img.add(Loader.ImageLoader("recursos/plataformas/plataforma.png"));
-		graficos.put("Base",img);
+		graficos.put("BaseBig",img);
 	}
 	private static void cargaBloques() {
 		ArrayList<BufferedImage> img = new ArrayList<>();
@@ -53,6 +69,25 @@ public class Recursos{
 		img = new ArrayList<>();
 		img.add(Loader.ImageLoader("recursos/sorpresas/slowBall.png"));
 		graficos.put("SlowBall", img);
+		
+		img = new ArrayList<>();
+		img.add(Loader.ImageLoader("recursos/sorpresas/pegante.png"));
+		graficos.put("Pegante", img);
+		
+		img = new ArrayList<>();
+		img.add(Loader.ImageLoader("recursos/sorpresas/small.png"));
+		graficos.put("ReductorBase", img);
+		
+		img = new ArrayList<>();
+		img.add(Loader.ImageLoader("recursos/sorpresas/big.png"));
+		graficos.put("AgrandadorBase", img);
+		
+		img = new ArrayList<>();
+		img.add(Loader.ImageLoader("recursos/sorpresas/especial.png"));
+		graficos.put("Especial", img);
+		
+		
+		
 	}
 	private static void addItemsTablero() {
 		marco = Loader.ImageLoader("recursos/marcos/marco.png");
@@ -62,6 +97,7 @@ public class Recursos{
 		corazon = Loader.ImageLoader("recursos/items/corazon.png");
 		arka = Loader.ImageLoader("recursos/items/arka.png");
 	}
+	
 	public static BufferedImage getImagen(String name,int estado) {
 		if(graficos.containsKey(name)) {
 			return graficos.get(name).get(estado);

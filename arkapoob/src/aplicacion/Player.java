@@ -8,8 +8,10 @@ public class Player{
 	private int puntos;
 	private int vidas;
 	private Base base;
-	private Chronometer time;
 	private ArkaPOOB arkaPOOB;
+	private String izq;
+	private String der;
+	private String fire;
         /**
          * 
          * @param vidas - vidas que posee el jugador
@@ -21,15 +23,22 @@ public class Player{
 		this.setPuntos(0);
 		this.vidas = vidas;
 		this.arkaPOOB = arkaPOOB;
-		time = new Chronometer();
-		base = Base.getBase(plataforma,posicion,this,izq,der,fire);
+		this.izq = izq;
+		this.der = der;
+		this.fire = fire;
+		base = new Base(posicion,this,plataforma);
 	}
 	/**
 	*update actualiza la logica del funcionamiento de la bola
 	*/
 	public void update(){
 		base.update();
-		time.update();
+		if(arkaPOOB.orden(izq)) 
+			base.movIzq();
+		if(arkaPOOB.orden(der)) 
+			base.movDer();
+		if(arkaPOOB.orden(fire)) 
+			base.fire();
 	}
 	public  Representacion representacion() {
 		return base.representacion();
@@ -51,17 +60,8 @@ public class Player{
         /**
          * Tiempo para correr
          */
-	public void tiempoDeEspera(){
-		time.run(300);
-	}
+
         
-        /**
-         * Define si el juego esta en espera
-         * @return 
-         */
-	public boolean enEspera(){
-		return time.isRunning();
-	}
         /**
          * Cambia el numero de vidas del jugador
          * @param delta - cantidad de vidas de cambio del jugador

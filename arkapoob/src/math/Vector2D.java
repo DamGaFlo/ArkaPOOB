@@ -106,4 +106,5 @@ public class Vector2D{
 		return getVector(getAngle()+angle,getMagnitud());
 		
 	}
+
 }

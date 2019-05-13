@@ -5,10 +5,9 @@ import java.util.*;
 
 public abstract class Sorpresa extends GameObject{
 	public static final int WIDTH_DEFAULT = 20,HEIGHT_DEFAULT = 20;
-	public static final int NUM_SORPRESAS = 2;
+	public static final int NUM_SORPRESAS = 6;
 	
-	public static final int SLOW_BALL = 1;
-	public static final int FAST_BALL = 1;
+	public static final int SLOW_BALL = 1,FAST_BALL = 2,ESPECIAL = 3, PEGANJOSA = 4,BIG = 5, SMALL = 6;
 	
 	public static final Vector2D velocidad = new Vector2D(0,6);
 	private Bloque bloque;
@@ -41,11 +40,23 @@ public abstract class Sorpresa extends GameObject{
 	public static Sorpresa getSorpresa(int numPower,Vector2D posicion,Bloque bloque){
 		Sorpresa envio;
 		switch(numPower){
-			case 1:
+			case FAST_BALL:
 				envio = new FastBall(posicion,bloque);
 				break;
-			case 2:
+			case SLOW_BALL:
 				envio = new SlowBall(posicion,bloque);
+				break;
+			case ESPECIAL:
+				envio = new Especial(posicion,bloque);
+				break;
+			case PEGANJOSA:
+				envio = new Pegante(posicion,bloque);
+				break;
+			case BIG:
+				envio = new AgrandadorBase(posicion,bloque);
+				break;
+			case SMALL:
+				envio = new ReductorBase(posicion,bloque);
 				break;
 			default:
 				envio = null;
