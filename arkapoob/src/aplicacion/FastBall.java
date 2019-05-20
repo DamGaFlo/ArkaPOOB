@@ -1,8 +1,9 @@
 package aplicacion;
 
+import java.io.Serializable;
 import math.Vector2D;
 
-public class FastBall extends Sorpresa{
+public class FastBall extends Sorpresa implements Serializable{
     /**
      * 
      * @param posicion - posicion de la sorpresa 

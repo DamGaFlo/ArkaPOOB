@@ -1,6 +1,8 @@
 package aplicacion;
 
-public class Representacion {
+import java.io.Serializable;
+
+public class Representacion implements Serializable{
 	private String nameClass;
 	private int x;
 	private int y;

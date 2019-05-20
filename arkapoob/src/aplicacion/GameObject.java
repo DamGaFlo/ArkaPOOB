@@ -1,8 +1,9 @@
 package aplicacion;
 
+import java.io.Serializable;
 import math.Vector2D;
 
-public abstract class GameObject{
+public abstract class GameObject implements Serializable{
 	private Vector2D posicion;
 	private int width;
 	private int height;

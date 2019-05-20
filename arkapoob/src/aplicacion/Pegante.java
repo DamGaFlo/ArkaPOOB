@@ -1,8 +1,9 @@
 package aplicacion;
 
+import java.io.Serializable;
 import math.Vector2D;
 
-public class Pegante extends Sorpresa{
+public class Pegante extends Sorpresa implements Serializable{
 	public Pegante(Vector2D posicion,int width,int height,int estado,Bloque bloque){
 		super(posicion,width,height,estado,bloque);
 

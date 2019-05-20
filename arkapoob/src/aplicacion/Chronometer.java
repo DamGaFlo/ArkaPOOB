@@ -1,6 +1,8 @@
 package aplicacion;
 
-public class Chronometer {
+import java.io.Serializable;
+
+public class Chronometer implements Serializable{
 	private long delta, lastTime;
 	private long time;
 	private boolean running;

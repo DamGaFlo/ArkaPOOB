@@ -1,7 +1,9 @@
 package math;
 
+import java.io.Serializable;
 
-public class Vector2D{
+
+public class Vector2D implements Serializable{
 	private double compX;
 	private double compY;
 	

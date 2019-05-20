@@ -1,45 +1,39 @@
 package aplicacion;
 
+import java.io.Serializable;
 import math.*;
 
-public class BaseNormal implements EstadoBase{
+public class BaseNormal implements EstadoBase, Serializable{
 	public BaseNormal(Base base) {
 		base.setWidth(140);
 	}
 	/**
 	 * actualiza los datos autonomos de la base
 	 */
-	@Override
 	public void update(Base base) { }
 	/**
 	 * ejecutacciones en caso de colicion con la bola
 	 */
-	@Override
 	public void colicion(BolaNormal bola, Base base) {
 			base.setColiciones(base.getColiciones()+1);
 	}
 
-	@Override
 	public Representacion representacion(Base base) {
 		return new Representacion(getNombre(),(int) base.getPosicion().getX(),(int)base.getPosicion().getY(),base.getEstado());
 			
 	}
 
-	@Override
 	public String getNombre() {
 		return this.getClass().getSimpleName();
 	}
 
-	@Override
 	public int getWidth(int width) {
 		return width;
 	}
 
-	@Override
 	public int getHeight(int height) {
 		return height;
 	}
-	@Override
 	public void movIzq(Base base) {
 		if(base.getPosicion().getX()-base.getMoxEnX() >= 0){
 			base.getPosicion().cambioX(-base.getMoxEnX());
@@ -59,31 +53,32 @@ public class BaseNormal implements EstadoBase{
 		}
 	}
 
-	@Override
 	public void pegajosa(Base base) {
 		base.setEstado(new BasePegajosa(base));
 	}
 
-	@Override
 	public void normal(Base base) {
 		base.setEstado(new BaseNormal(base));
 	}
 
-	@Override
 	public void especial(Base base) {
 		base.setEstado(new BaseEspecial(base));	
 	}
 
-	@Override
 	public void small(Base base) {
 		base.setEstado(new BaseSmall(base));
 	}
 
-	@Override
 	public void big(Base base) {
 		base.setEstado(new BaseBig(base));
 	}
-	@Override
+        /**
+         * permite a la base disparar
+         * @param base
+         */
+	public void shooter(Base base){
+		base.setEstado(new BaseShooter(base));
+	}
 	public void revisaLimite(Base base) {}
 
 }

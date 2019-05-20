@@ -1,8 +1,9 @@
 package aplicacion;
 
+import java.io.Serializable;
 import math.Vector2D;
 
-public class ReductorBase extends Sorpresa{
+public class ReductorBase extends Sorpresa implements Serializable{
 	public ReductorBase(Vector2D posicion,int width,int height,int estado,Bloque bloque){
 		super(posicion,width,height,estado,bloque);
 

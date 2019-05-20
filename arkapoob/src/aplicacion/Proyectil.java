@@ -1,8 +1,9 @@
 package aplicacion;
 
+import java.io.Serializable;
 import math.Vector2D;
 
-public abstract class Proyectil extends GameObject{
+public abstract class Proyectil extends GameObject implements Serializable{
 	
 	public  static final int DAMAGE_NORMAL = 1;
 	private int damage;
@@ -14,7 +15,6 @@ public abstract class Proyectil extends GameObject{
         /**
          * 
          * @param posicion - Vector en el cual se encuentra el proyectil
-         * @param textura - Imagen que posee la bola
          * @param arkaPOOB - Juego sobre el cual actua 
          * @param ultimoGolpeador - ultimo jugador que dio un golpe en la bola
          * @param damage - daño que genera la bola
@@ -30,7 +30,9 @@ public abstract class Proyectil extends GameObject{
         /**
          * 
          * @param posicion - Vector en el cual se encuentra el proyectil
-         * @param textura - Imagen que posee la bola
+         * @param width
+         * @param height
+         * @param estado
          * @param arkaPOOB - Juego sobre el cual actua 
          * @param ultimoGolpeador - ultimo jugador que dio un golpe en la bola
          * @param damage - daño que genera la bola
@@ -67,8 +69,11 @@ public abstract class Proyectil extends GameObject{
 	public ArkaPOOB getArkaPoob(){
 		return arkaPOOB;
 	}
-        
         /**
+         * 
+         * @return Juego sobre el cual se actua
+         */
+	/**
          * 
          * @return Ancho maximo del juego 
          */
@@ -99,6 +104,13 @@ public abstract class Proyectil extends GameObject{
          */
 	public Player getUltimoGolpe(){
 		return ultimoGolpeador;
+	}
+        
+        /**
+         * @param player
+         */
+	protected void setUltimoGolpe(Player player){
+		ultimoGolpeador = player;
 	}
 	public abstract void mov();
 	public abstract void mov(Vector2D vel);

@@ -1,10 +1,11 @@
 package aplicacion;
 
 
+import java.io.Serializable;
 import math.Vector2D;
 
 
-public class Player{
+public class Player implements Serializable{
 	private int puntos;
 	private int vidas;
 	private Base base;

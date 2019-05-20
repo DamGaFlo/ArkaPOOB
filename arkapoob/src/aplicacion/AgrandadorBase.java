@@ -1,17 +1,27 @@
 package aplicacion;
 
+import java.io.Serializable;
 import math.Vector2D;
 
-public class AgrandadorBase extends Sorpresa{
+public class AgrandadorBase extends Sorpresa implements Serializable{
+        /**
+         * Constructor 
+         * @param posicion
+         * @param width
+         * @param height
+         * @param estado
+         * @param bloque 
+         */
 	public AgrandadorBase(Vector2D posicion,int width,int height,int estado,Bloque bloque){
 		super(posicion,width,height,estado,bloque);
 
 	}
-		/**
-		 * 
-		 * @param posicion
-		 * @param bloque
-		 */
+        
+        /**
+         * 
+         * @param posicion
+         * @param bloque
+         */
 	public AgrandadorBase(Vector2D posicion,Bloque bloque) {
 		this(posicion,WIDTH_DEFAULT,HEIGHT_DEFAULT,0,bloque);
 	}
@@ -23,12 +33,21 @@ public class AgrandadorBase extends Sorpresa{
 	public void efecto(Base base){
 		base.big();
 	}
-    public  Representacion representacion() {
-    	return new Representacion(getNombre(),(int)getPosicion().getX(),(int)getPosicion().getY(),getEstado());
-    }
-    	
-    public String getNombre() {
-    	return this.getClass().getSimpleName();
-    }
+        /**
+         * Retorna la Representacion con la cual se basa una base
+         * @return 
+         */
+        @Override
+        public  Representacion representacion() {
+            return new Representacion(getNombre(),(int)getPosicion().getX(),(int)getPosicion().getY(),getEstado());
+        }
+        /**
+         * Devuelve el nombre de la clase
+         * @return 
+         */
+        @Override
+        public String getNombre() {
+            return this.getClass().getSimpleName();
+        }
 
 }

@@ -6,11 +6,11 @@
 package presentacion;
 
 import javax.swing.*;
-
+import javax.swing.*;
+import java.awt.event.*;
 import graficos.Recursos;
 
 import java.awt.event.*;
-import input.*;
 /**
  *
  * @author IJuanKhoxD
@@ -18,12 +18,13 @@ import input.*;
 public class PantallaInicio extends JFrame{
     
     private static final int ANCHO = 640,LARGO = 480;
-    private JButton player1, player2, exit;
+    private JButton player1, player2, exit, bSetup;
+    private Setup setup = null;
     /**
      * Constructor de la pantalla inicial
      */
     public PantallaInicio(){  
-        super("Arkanoid");         
+        super("ArkaPOOB");         
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE );
         prepareElementos();   
         prepareAcciones();
@@ -51,7 +52,10 @@ public class PantallaInicio extends JFrame{
             JLabel Arkanoid = new JLabel(new ImageIcon("recursos/PantallaInicio/Arkanoid.png"));      
             JLabel BackGround = new JLabel(new ImageIcon("recursos/PantallaInicio/Fondo.gif"));            
             BackGround.setBounds(0,0,ANCHO, LARGO);                       
-            Arkanoid.setBounds(ANCHO/4,10,320,116);                   
+            Arkanoid.setBounds(ANCHO/4,10,320,116); 
+            bSetup.setBounds(560,30,50,50);
+            bSetup.setContentAreaFilled(false);
+            bSetup.setBorderPainted(false);
             player1.setBounds(220,150,200,126);
             player1.setContentAreaFilled(false);
             player1.setBorderPainted(false);
@@ -62,6 +66,7 @@ public class PantallaInicio extends JFrame{
             exit.setContentAreaFilled(false);
             exit.setBorderPainted(false);            
             
+            principal.add(bSetup);
             principal.add(player1);
             principal.add(player2);
             principal.add(exit);    
@@ -77,7 +82,9 @@ public class PantallaInicio extends JFrame{
     private void prepareElementos() {         
         setSize(ANCHO,LARGO);
 	setResizable(false);
-	setLocationRelativeTo(null);               
+	setLocationRelativeTo(null);   
+        setup = new Setup(this);
+        bSetup = new JButton(new ImageIcon("recursos/PantallaInicio/Setup.gif"));
         player1 = new JButton(new ImageIcon("recursos/PantallaInicio/1_Player.gif"));
         player2 = new JButton(new ImageIcon("recursos/PantallaInicio/2_Players.gif"));
         exit = new JButton(new ImageIcon("recursos/PantallaInicio/EXIT.gif"));   
@@ -107,6 +114,12 @@ public class PantallaInicio extends JFrame{
                 player2();
             }            
         });
+        bSetup.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                setup();
+            }            
+        });
         exit.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
@@ -131,13 +144,15 @@ public class PantallaInicio extends JFrame{
      * define la accion al seleccionar un jugador
      */
     private void player1() {
-        this.setVisible(false);
-        ArkaPoobGUI juego = new ArkaPoobGUI();
-        juego.setVisible(true);
+        Opciones opciones =  new Opciones(this,"ArkaPoobGUI"); 
+        opciones.setVisible(true);
     }
     private void player2() {
-        this.setVisible(false);
-        ArkaPoobGUI juego = new ArkaPoob2pGUI();
-        juego.setVisible(true);
+        Opciones opciones =  new Opciones(this,"ArkaPoob2pGUI"); 
+        opciones.setVisible(true);
+    }
+    private void setup(){
+        setup.setVisible(true);
+        setEnabled(false);
     }
 }

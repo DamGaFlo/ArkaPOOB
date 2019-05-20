@@ -1,8 +1,9 @@
 package aplicacion;
 
+import java.io.Serializable;
 import math.Vector2D;
 
-public class Especial extends Sorpresa{
+public class Especial extends Sorpresa implements Serializable{
 	
 	public Especial(Vector2D posicion,int width,int height,int estado,Bloque bloque){
 		super(posicion,width,height,estado,bloque);
@@ -30,5 +31,8 @@ public class Especial extends Sorpresa{
     	
     public String getNombre() {
     	return this.getClass().getSimpleName();
+    }
+    public boolean inverso() {
+    	return true;
     }
 }

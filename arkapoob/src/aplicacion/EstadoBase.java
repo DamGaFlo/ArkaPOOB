@@ -1,6 +1,7 @@
 package aplicacion;
 
-public interface EstadoBase {
+
+public interface EstadoBase{
 	public void update(Base base);
 	default void colicionDeBase(Base base,int desplazamiento) {
 		Base baseRival = null;
@@ -12,6 +13,9 @@ public interface EstadoBase {
 			int distanciaCentros = (int)Math.abs(base.getCentro().getX() - baseRival.getCentro().getX());
 			if(distaciaMinima > distanciaCentros) baseRival.getPosicion().cambioX(-desplazamiento);
  		}
+	}
+	default boolean inverso() {
+		return false;
 	}
 	
 	public void colicion(BolaNormal bola,Base base);
@@ -28,6 +32,7 @@ public interface EstadoBase {
 	public void especial(Base base);
 	public void small(Base base);
 	public void big(Base base);
+    public void shooter(Base base);
 	public void revisaLimite(Base base);
 	
 }
